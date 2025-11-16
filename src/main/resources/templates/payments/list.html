@@ -71,7 +71,7 @@
                             <td th:text="${payment.paymentId}"></td>
                             <td th:text="${payment.orderId}"></td>
                             <td th:text="${payment.customerName}"></td>
-                            <td th:text="${payment.orderDate != null ? #temporals.format(payment.orderDate, 'yyyy-MM-dd') : 'N/A'}"></td>
+                            <td th:text="${payment.orderDate != null ? #dates.format(payment.orderDate, 'yyyy-MM-dd') : 'N/A'}"></td>
                             <td th:text="${payment.paymentMethod}"></td>
                             <td th:text="${#numbers.formatDecimal(payment.paymentAmount, 0, 'COMMA', 2, 'POINT')}">$0.00</td>
                             <td>

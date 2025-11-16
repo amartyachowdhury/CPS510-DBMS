@@ -61,7 +61,7 @@
                     <dt class="col-sm-3">Customer</dt>
                     <dd class="col-sm-9" th:text="${payment.customerName ?: 'N/A'}"></dd>
                     <dt class="col-sm-3">Order Date</dt>
-                    <dd class="col-sm-9" th:text="${payment.orderDate != null ? #temporals.format(payment.orderDate, 'yyyy-MM-dd') : 'N/A'}"></dd>
+                    <dd class="col-sm-9" th:text="${payment.orderDate != null ? #dates.format(payment.orderDate, 'yyyy-MM-dd') : 'N/A'}"></dd>
                     <dt class="col-sm-3">Payment Method</dt>
                     <dd class="col-sm-9" th:text="${payment.paymentMethod}"></dd>
                     <dt class="col-sm-3">Amount</dt>

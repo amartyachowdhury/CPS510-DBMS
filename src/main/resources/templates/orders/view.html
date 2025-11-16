@@ -57,7 +57,7 @@
                     <dt class="col-sm-3">Order ID</dt>
                     <dd class="col-sm-9" th:text="${order.orderId}"></dd>
                     <dt class="col-sm-3">Date</dt>
-                    <dd class="col-sm-9" th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd')}"></dd>
+                    <dd class="col-sm-9" th:text="${order.orderDate != null ? #dates.format(order.orderDate, 'yyyy-MM-dd') : 'N/A'}"></dd>
                     <dt class="col-sm-3">Customer</dt>
                     <dd class="col-sm-9" th:text="${order.customerName}"></dd>
                     <dt class="col-sm-3">Employee</dt>
@@ -65,8 +65,7 @@
                     <dt class="col-sm-3">Status</dt>
                     <dd class="col-sm-9">
                         <span class="badge" 
-                              th:classappend="${order.orderStatus == 'Completed'} ? 'bg-success' : 
-                                               (${order.orderStatus == 'Pending'}) ? 'bg-warning' : 'bg-secondary'"
+                              th:classappend="${(order.orderStatus == 'Completed') ? 'bg-success' : ((order.orderStatus == 'Pending') ? 'bg-warning' : 'bg-secondary')}"
                               th:text="${order.orderStatus}"></span>
                     </dd>
                     <dt class="col-sm-3">Total Amount</dt>

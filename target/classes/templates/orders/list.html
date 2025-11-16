@@ -68,14 +68,13 @@
                     <tbody>
                         <tr th:each="order : ${orders}">
                             <td th:text="${order.orderId}"></td>
-                            <td th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd')}"></td>
+                            <td th:text="${order.orderDate != null ? #dates.format(order.orderDate, 'yyyy-MM-dd') : 'N/A'}"></td>
                             <td th:text="${order.customerName}"></td>
                             <td th:text="${order.employeeName}"></td>
                             <td th:text="${#numbers.formatDecimal(order.totalAmount, 0, 'COMMA', 2, 'POINT')}">$0.00</td>
                             <td>
                                 <span class="badge" 
-                                      th:classappend="${order.orderStatus == 'Completed'} ? 'bg-success' : 
-                                                       (${order.orderStatus == 'Pending'}) ? 'bg-warning' : 'bg-secondary'"
+                                      th:classappend="${(order.orderStatus == 'Completed') ? 'bg-success' : ((order.orderStatus == 'Pending') ? 'bg-warning' : 'bg-secondary')}"
                                       th:text="${order.orderStatus}"></span>
                             </td>
                             <td>

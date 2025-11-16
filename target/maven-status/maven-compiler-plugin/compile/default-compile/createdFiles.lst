@@ -1,5 +1,6 @@
 com/cps510/dao/PaymentDAO$PaymentRowMapper.class
 com/cps510/model/Product.class
+com/cps510/dao/OrderDAO$OrderRowMapperWithIds.class
 com/cps510/controller/CustomerController.class
 com/cps510/dao/EmployeeDAO.class
 com/cps510/Cps510Application.class

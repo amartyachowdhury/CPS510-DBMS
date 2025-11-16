@@ -26,8 +26,17 @@ public class OrderDAO {
             order.setOrderDate(rs.getTimestamp("order_date"));
             order.setTotalAmount(rs.getBigDecimal("total_amount"));
             order.setOrderStatus(rs.getString("order_status"));
-            order.setCustomerId(rs.getLong("customer_id"));
-            order.setEmployeeId(rs.getLong("employee_id"));
+            // Note: V_ORDERS_SUMMARY view doesn't include customer_id/employee_id, only names
+            try {
+                order.setCustomerId(rs.getLong("customer_id"));
+            } catch (SQLException e) {
+                // Not in view, will be null
+            }
+            try {
+                order.setEmployeeId(rs.getLong("employee_id"));
+            } catch (SQLException e) {
+                // Not in view, will be null
+            }
             try {
                 order.setCustomerName(rs.getString("customer_name"));
             } catch (SQLException e) {
@@ -48,8 +57,13 @@ public class OrderDAO {
     }
 
     public Order findById(Long orderId) {
-        String sql = "SELECT * FROM V_ORDERS_SUMMARY WHERE order_id = ?";
-        List<Order> orders = jdbcTemplate.query(sql, new OrderRowMapper(), orderId);
+        // Use direct table query to get IDs when needed
+        String sql = "SELECT o.order_id, o.order_date, o.total_amount, o.order_status, " +
+                     "o.customer_id, o.employee_id, c.customer_name, e.employee_name " +
+                     "FROM Order_ o JOIN Customer c ON o.customer_id = c.customer_id " +
+                     "JOIN Employee e ON o.employee_id = e.employee_id " +
+                     "WHERE o.order_id = ?";
+        List<Order> orders = jdbcTemplate.query(sql, new OrderRowMapperWithIds(), orderId);
         return orders.isEmpty() ? null : orders.get(0);
     }
 
@@ -59,7 +73,31 @@ public class OrderDAO {
                      "FROM Order_ o JOIN Customer c ON o.customer_id = c.customer_id " +
                      "JOIN Employee e ON o.employee_id = e.employee_id " +
                      "WHERE o.customer_id = ? ORDER BY o.order_date DESC";
-        return jdbcTemplate.query(sql, new OrderRowMapper(), customerId);
+        return jdbcTemplate.query(sql, new OrderRowMapperWithIds(), customerId);
+    }
+
+    private static final class OrderRowMapperWithIds implements RowMapper<Order> {
+        @Override
+        public Order mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Order order = new Order();
+            order.setOrderId(rs.getLong("order_id"));
+            order.setOrderDate(rs.getTimestamp("order_date"));
+            order.setTotalAmount(rs.getBigDecimal("total_amount"));
+            order.setOrderStatus(rs.getString("order_status"));
+            order.setCustomerId(rs.getLong("customer_id"));
+            order.setEmployeeId(rs.getLong("employee_id"));
+            try {
+                order.setCustomerName(rs.getString("customer_name"));
+            } catch (SQLException e) {
+                // May not be present in all queries
+            }
+            try {
+                order.setEmployeeName(rs.getString("employee_name"));
+            } catch (SQLException e) {
+                // May not be present in all queries
+            }
+            return order;
+        }
     }
 
     public Long insert(Order order) {
