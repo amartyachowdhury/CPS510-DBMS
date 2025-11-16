@@ -1,0 +1,102 @@
+package com.cps510.controller;
+
+import com.cps510.dao.OrderDAO;
+import com.cps510.dao.PaymentDAO;
+import com.cps510.model.Payment;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
+
+@Controller
+@RequestMapping("/payments")
+public class PaymentController {
+
+    @Autowired
+    private PaymentDAO paymentDAO;
+
+    @Autowired
+    private OrderDAO orderDAO;
+
+    @GetMapping
+    public String listPayments(Model model) {
+        List<Payment> payments = paymentDAO.findAll();
+        model.addAttribute("payments", payments);
+        return "payments/list";
+    }
+
+    @GetMapping("/{id}")
+    public String viewPayment(@PathVariable Long id, Model model) {
+        Payment payment = paymentDAO.findById(id);
+        if (payment == null) {
+            return "redirect:/payments";
+        }
+        model.addAttribute("payment", payment);
+        return "payments/view";
+    }
+
+    @GetMapping("/new")
+    public String showPaymentForm(@RequestParam(required = false) Long orderId, Model model) {
+        Payment payment = new Payment();
+        if (orderId != null) {
+            payment.setOrderId(orderId);
+        }
+        model.addAttribute("payment", payment);
+        model.addAttribute("orders", orderDAO.findAll());
+        return "payments/form";
+    }
+
+    @PostMapping("/new")
+    public String createPayment(@ModelAttribute Payment payment, RedirectAttributes redirectAttributes) {
+        try {
+            if (payment.getPaymentStatus() == null || payment.getPaymentStatus().isEmpty()) {
+                payment.setPaymentStatus("Pending");
+            }
+            paymentDAO.insert(payment);
+            redirectAttributes.addFlashAttribute("successMessage", "Payment created successfully!");
+            return "redirect:/payments";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Error creating payment: " + e.getMessage());
+            return "redirect:/payments/new";
+        }
+    }
+
+    @GetMapping("/{id}/edit")
+    public String showEditForm(@PathVariable Long id, Model model) {
+        Payment payment = paymentDAO.findById(id);
+        if (payment == null) {
+            return "redirect:/payments";
+        }
+        model.addAttribute("payment", payment);
+        model.addAttribute("orders", orderDAO.findAll());
+        return "payments/form";
+    }
+
+    @PostMapping("/{id}/edit")
+    public String updatePayment(@PathVariable Long id, @ModelAttribute Payment payment, RedirectAttributes redirectAttributes) {
+        try {
+            payment.setPaymentId(id);
+            paymentDAO.update(payment);
+            redirectAttributes.addFlashAttribute("successMessage", "Payment updated successfully!");
+            return "redirect:/payments/" + id;
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Error updating payment: " + e.getMessage());
+            return "redirect:/payments/" + id + "/edit";
+        }
+    }
+
+    @PostMapping("/{id}/delete")
+    public String deletePayment(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            paymentDAO.delete(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Payment deleted successfully!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Error deleting payment: " + e.getMessage());
+        }
+        return "redirect:/payments";
+    }
+}
+
