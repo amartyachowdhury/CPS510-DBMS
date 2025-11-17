@@ -83,5 +83,14 @@ public class PaymentDAO {
         String sql = "DELETE FROM Payment WHERE payment_id = ?";
         return jdbcTemplate.update(sql, paymentId);
     }
+
+    /**
+     * Calculate the total amount of paid payments for an order
+     */
+    public BigDecimal getTotalPaidAmount(Long orderId) {
+        String sql = "SELECT NVL(SUM(payment_amount), 0) FROM Payment WHERE order_id = ? AND payment_status = 'Paid'";
+        BigDecimal total = jdbcTemplate.queryForObject(sql, BigDecimal.class, orderId);
+        return total != null ? total : BigDecimal.ZERO;
+    }
 }
 

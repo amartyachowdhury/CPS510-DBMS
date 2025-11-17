@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
@@ -56,6 +57,10 @@ public class PaymentController {
                 payment.setPaymentStatus("Pending");
             }
             paymentDAO.insert(payment);
+            
+            // Update order status based on payment status
+            updateOrderStatusBasedOnPayments(payment.getOrderId());
+            
             redirectAttributes.addFlashAttribute("successMessage", "Payment created successfully!");
             return "redirect:/payments";
         } catch (Exception e) {
@@ -79,7 +84,12 @@ public class PaymentController {
     public String updatePayment(@PathVariable Long id, @ModelAttribute Payment payment, RedirectAttributes redirectAttributes) {
         try {
             payment.setPaymentId(id);
+            Long orderId = payment.getOrderId();
             paymentDAO.update(payment);
+            
+            // Update order status based on payment status
+            updateOrderStatusBasedOnPayments(orderId);
+            
             redirectAttributes.addFlashAttribute("successMessage", "Payment updated successfully!");
             return "redirect:/payments/" + id;
         } catch (Exception e) {
@@ -91,12 +101,46 @@ public class PaymentController {
     @PostMapping("/{id}/delete")
     public String deletePayment(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
+            // Get the order ID before deleting
+            Payment payment = paymentDAO.findById(id);
+            Long orderId = payment != null ? payment.getOrderId() : null;
+            
             paymentDAO.delete(id);
+            
+            // Update order status after deletion (order might no longer be fully paid)
+            if (orderId != null) {
+                updateOrderStatusBasedOnPayments(orderId);
+            }
+            
             redirectAttributes.addFlashAttribute("successMessage", "Payment deleted successfully!");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Error deleting payment: " + e.getMessage());
         }
         return "redirect:/payments";
+    }
+
+    /**
+     * Updates the order status based on payment status.
+     * If the order is fully paid (total paid >= order total), sets status to "Completed".
+     * Otherwise, keeps it as "Pending".
+     */
+    private void updateOrderStatusBasedOnPayments(Long orderId) {
+        try {
+            BigDecimal orderTotal = orderDAO.getOrderTotalAmount(orderId);
+            BigDecimal totalPaid = paymentDAO.getTotalPaidAmount(orderId);
+            
+            // Compare with tolerance for floating point comparison
+            if (totalPaid.compareTo(orderTotal) >= 0 && orderTotal.compareTo(BigDecimal.ZERO) > 0) {
+                // Order is fully paid
+                orderDAO.updateOrderStatus(orderId, "Completed");
+            } else {
+                // Order is not fully paid yet
+                orderDAO.updateOrderStatus(orderId, "Pending");
+            }
+        } catch (Exception e) {
+            // Log error but don't fail the payment operation
+            System.err.println("Error updating order status for order " + orderId + ": " + e.getMessage());
+        }
     }
 }
 

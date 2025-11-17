@@ -133,5 +133,20 @@ public class OrderDAO {
         String sql = "UPDATE Order_ SET total_amount = ? WHERE order_id = ?";
         return jdbcTemplate.update(sql, totalAmount, orderId);
     }
+
+    public int updateOrderStatus(Long orderId, String status) {
+        String sql = "UPDATE Order_ SET order_status = ? WHERE order_id = ?";
+        return jdbcTemplate.update(sql, status, orderId);
+    }
+
+    public BigDecimal getOrderTotalAmount(Long orderId) {
+        String sql = "SELECT total_amount FROM Order_ WHERE order_id = ?";
+        try {
+            BigDecimal total = jdbcTemplate.queryForObject(sql, BigDecimal.class, orderId);
+            return total != null ? total : BigDecimal.ZERO;
+        } catch (Exception e) {
+            return BigDecimal.ZERO;
+        }
+    }
 }
 
