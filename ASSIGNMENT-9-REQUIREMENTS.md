@@ -7,21 +7,21 @@
 ### 1. Demo of Menu with UI (1.0 mark)
 
 **Requirements:**
-- [ ] **Drop Tables** option implemented
-- [ ] **Create Tables** option implemented  
-- [ ] **Populate Tables** option implemented
-- [ ] **Query Tables** option implemented
-- [ ] **Exit** option implemented
-- [ ] UI connected to database (school or localhost) ✅ **DONE**
+- [x] **Drop Tables** option implemented ✅ **DONE**
+- [x] **Create Tables** option implemented ✅ **DONE**
+- [x] **Populate Tables** option implemented ✅ **DONE**
+- [x] **Query Tables** option implemented ✅ **DONE**
+- [x] **Exit** option implemented ✅ **DONE** (Back to Home serves as exit)
+- [x] UI connected to database (school or localhost) ✅ **DONE**
 
 **Current Status:**
 - ✅ Web-based UI implemented
 - ✅ Connected to Ryerson Oracle database
-- ❌ **MISSING: Drop Tables functionality**
-- ❌ **MISSING: Create Tables functionality** (schema already exists, but no UI option)
-- ❌ **MISSING: Populate Tables functionality** (no bulk insert option in UI)
-- ❌ **MISSING: Query Tables functionality** (CRUD exists, but no explicit "Query Tables" menu)
-- ⚠️ Need to add a menu/dashboard that provides these options
+- ✅ **Drop Tables functionality** - Admin page with confirmation dialog
+- ✅ **Create Tables functionality** - Recreates all tables, sequences, triggers, views
+- ✅ **Populate Tables functionality** - Inserts sample data into all tables
+- ✅ **Query Tables functionality** - Shows summary with row counts for all tables/views
+- ✅ **Admin menu page** at `/admin` with all schema management options
 
 **To achieve 1.0 mark (Excellent):**
 - All options must work correctly
@@ -58,12 +58,16 @@
 - [x] **Read records** ✅ **DONE** (all entities have list/view)
 - [x] **Update records** ✅ **DONE** (all entities have edit functionality)
 - [x] **Delete records** ✅ **DONE** (all entities have delete functionality)
-- [ ] **Search for specific records** ❌ **MISSING** (need search functionality)
+- [x] **Search for specific records** ✅ **DONE** (search implemented for all entities)
 - [ ] Code properly formatted & commented ⚠️ **NEEDS REVIEW**
 
 **Current Status:**
 - ✅ Read, Update, Delete implemented for all entities
-- ❌ **Search functionality NOT implemented**
+- ✅ **Search functionality implemented** - All list pages have search forms
+  - Customers: search by name, email, or phone
+  - Products: search by name, brand, color, or category
+  - Orders: search by order ID, customer name, employee name, or status
+  - Payments: search by payment ID, order ID, method, status, or amount
 - ⚠️ Code comments need review
 
 **To achieve 0.5 marks (Excellent):**
@@ -131,19 +135,20 @@
 
 ### High Priority (Required for full marks):
 
-1. **Add Search Functionality** (Required - 0.5 marks)
-   - Add search to Customers page
-   - Add search to Products page
-   - Add search to Orders page
-   - Add search to Payments page
+1. **Add Search Functionality** (Required - 0.5 marks) ✅ **COMPLETED**
+   - ✅ Add search to Customers page
+   - ✅ Add search to Products page
+   - ✅ Add search to Orders page
+   - ✅ Add search to Payments page
 
-2. **Add Menu Options for Schema Management** (Required - 1.0 mark)
-   - Create an admin/management page with options:
-     - Drop Tables (with confirmation)
-     - Create Tables (recreate schema)
-     - Populate Tables (bulk insert sample data)
-     - Query Tables (show data)
-   - These can be web pages or a dedicated management interface
+2. **Add Menu Options for Schema Management** (Required - 1.0 mark) ✅ **COMPLETED**
+   - ✅ Created admin/management page at `/admin` with options:
+     - ✅ Drop Tables (with confirmation dialog)
+     - ✅ Create Tables (recreates complete schema)
+     - ✅ Populate Tables (inserts sample data)
+     - ✅ Query Tables (shows table summaries with row counts)
+   - ✅ All options functional through web interface
+   - ✅ Accessible from main navigation menu
 
 3. **Add Code Comments** (Required - 0.5 + 0.5 marks)
    - Review all DAO classes - add comments for complex queries
@@ -164,9 +169,9 @@
 ## 🎯 Expected Score
 
 **Core Assignment (3 marks):**
-- Menu with UI: 1.0 mark (need to add menu options)
+- Menu with UI: 1.0 mark ✅ (all menu options implemented)
 - Normalization & Schema: 0.5 marks (need code comments)
-- SQL Queries & Code: 0.5 marks (need search + comments)
+- SQL Queries & Code: 0.5 marks (✅ search done, need comments)
 - Individual Evaluation: 1.0 mark (presentation required)
 
 **Bonus (3 marks):**
@@ -183,8 +188,8 @@
 - [ ] README.md with setup instructions
 - [ ] Screenshots of application running
 - [ ] Database connection instructions
-- [ ] All menu options functional
-- [ ] Search functionality working
+- [x] All menu options functional ✅
+- [x] Search functionality working ✅
 - [ ] Code properly commented
 - [ ] Ready for demo/presentation
 
@@ -192,8 +197,8 @@
 
 ## 🔧 Quick Wins
 
-1. **Add Search Bar** to each list page (Customers, Products, Orders, Payments)
-2. **Add Admin Menu** page with Drop/Create/Populate/Query options
+1. ✅ **Add Search Bar** to each list page (Customers, Products, Orders, Payments) - **COMPLETED**
+2. ✅ **Add Admin Menu** page with Drop/Create/Populate/Query options - **COMPLETED**
 3. **Add JavaDoc Comments** to all classes and methods
 4. **Test all functionality** before submission
 
