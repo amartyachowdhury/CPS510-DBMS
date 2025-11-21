@@ -2,7 +2,7 @@
 
 A Spring Boot web application for managing a Clothing Retail Store database system connected to Oracle 11g.
 
-## 🚀 Live Demo
+## Live Demo
 
 **Deployed Application**: [View Live Demo](https://cps510-dbms-production.up.railway.app/)
 
