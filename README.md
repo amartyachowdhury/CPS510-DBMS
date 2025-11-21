@@ -4,7 +4,7 @@ A Spring Boot web application for managing a Clothing Retail Store database syst
 
 ## 🚀 Live Demo
 
-**Deployed Application**: [View Live Demo](https://your-app.up.railway.app)
+**Deployed Application**: [View Live Demo](https://cps510-dbms-production.up.railway.app/)
 
 > **Note**: If the deployed application cannot connect to the database (due to network restrictions), please follow the [Local Launch Instructions](#building-and-running) below to run the application locally.
 
