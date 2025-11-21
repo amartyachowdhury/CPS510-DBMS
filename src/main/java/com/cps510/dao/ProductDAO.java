@@ -10,12 +10,24 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Data Access Object (DAO) for Product entity.
+ * Provides CRUD operations, category-based queries, and search functionality for products.
+ * Uses Spring JDBC for database operations and joins with Category table.
+ * 
+ * @author CPS510 Team
+ * @version 1.0
+ */
 @Repository
 public class ProductDAO {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    /**
+     * RowMapper implementation for mapping ResultSet rows to Product objects.
+     * Handles optional category_name field gracefully for queries that may not include it.
+     */
     private static final class ProductRowMapper implements RowMapper<Product> {
         @Override
         public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -37,6 +49,12 @@ public class ProductDAO {
         }
     }
 
+    /**
+     * Retrieves all products from the database with their category names, ordered by product name.
+     * Uses JOIN with Category_ table to include category information.
+     * 
+     * @return List of all Product entities with category information, ordered by product name
+     */
     public List<Product> findAll() {
         String sql = "SELECT p.product_id, p.product_name, p.product_size, p.product_colour, p.product_brand, " +
                      "p.product_price, p.product_stock_qty, p.category_id, c.category_name " +
@@ -45,6 +63,12 @@ public class ProductDAO {
         return jdbcTemplate.query(sql, new ProductRowMapper());
     }
 
+    /**
+     * Retrieves a product by its unique ID, including category information.
+     * 
+     * @param productId The unique identifier of the product
+     * @return Product entity if found, null otherwise
+     */
     public Product findById(Long productId) {
         String sql = "SELECT p.product_id, p.product_name, p.product_size, p.product_colour, p.product_brand, " +
                      "p.product_price, p.product_stock_qty, p.category_id, c.category_name " +
@@ -54,6 +78,12 @@ public class ProductDAO {
         return products.isEmpty() ? null : products.get(0);
     }
 
+    /**
+     * Retrieves all products belonging to a specific category.
+     * 
+     * @param categoryId The unique identifier of the category
+     * @return List of products in the specified category, ordered by product name
+     */
     public List<Product> findByCategory(Long categoryId) {
         String sql = "SELECT p.product_id, p.product_name, p.product_size, p.product_colour, p.product_brand, " +
                      "p.product_price, p.product_stock_qty, p.category_id, c.category_name " +
@@ -62,6 +92,13 @@ public class ProductDAO {
         return jdbcTemplate.query(sql, new ProductRowMapper(), categoryId);
     }
 
+    /**
+     * Inserts a new product into the database.
+     * Uses Oracle sequence (PRODUCT_SEQ) via trigger to auto-generate the ID.
+     * 
+     * @param product The Product entity to insert
+     * @return The generated product ID
+     */
     public Long insert(Product product) {
         String sql = "INSERT INTO Product (product_name, product_size, product_colour, product_brand, " +
                      "product_price, product_stock_qty, category_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -78,6 +115,12 @@ public class ProductDAO {
         }
     }
 
+    /**
+     * Updates an existing product in the database.
+     * 
+     * @param product The Product entity with updated information
+     * @return Number of rows affected (should be 1 if update successful)
+     */
     public int update(Product product) {
         String sql = "UPDATE Product SET product_name = ?, product_size = ?, product_colour = ?, " +
                      "product_brand = ?, product_price = ?, product_stock_qty = ?, category_id = ? " +
@@ -88,6 +131,12 @@ public class ProductDAO {
                                    product.getCategoryId(), product.getProductId());
     }
 
+    /**
+     * Deletes a product from the database by ID.
+     * 
+     * @param productId The unique identifier of the product to delete
+     * @return Number of rows affected (should be 1 if delete successful)
+     */
     public int delete(Long productId) {
         String sql = "DELETE FROM Product WHERE product_id = ?";
         return jdbcTemplate.update(sql, productId);
@@ -95,8 +144,10 @@ public class ProductDAO {
 
     /**
      * Searches for products by name, brand, colour, or category name.
+     * Uses case-insensitive LIKE pattern matching across multiple fields.
+     * 
      * @param searchTerm The search term to match against product attributes
-     * @return List of products matching the search criteria
+     * @return List of products matching the search criteria, ordered by product name
      */
     public List<Product> search(String searchTerm) {
         String sql = "SELECT p.product_id, p.product_name, p.product_size, p.product_colour, p.product_brand, " +

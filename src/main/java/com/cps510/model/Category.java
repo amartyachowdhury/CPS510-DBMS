@@ -1,5 +1,13 @@
 package com.cps510.model;
 
+/**
+ * Model class representing a Category entity.
+ * Maps to the Category_ table in the database.
+ * Categories are used to classify products (e.g., Men's Wear, Women's Wear, Accessories).
+ * 
+ * @author CPS510 Team
+ * @version 1.0
+ */
 public class Category {
     private Long categoryId;
     private String categoryName;

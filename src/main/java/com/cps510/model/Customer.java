@@ -1,5 +1,12 @@
 package com.cps510.model;
 
+/**
+ * Model class representing a Customer entity.
+ * Maps to the Customer table in the database.
+ * 
+ * @author CPS510 Team
+ * @version 1.0
+ */
 public class Customer {
     private Long customerId;
     private String customerName;

@@ -8,6 +8,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+/**
+ * Main controller for the application dashboard/home page.
+ * Handles the root URL and displays system statistics.
+ * 
+ * @author CPS510 Team
+ * @version 1.0
+ */
 @Controller
 public class MainController {
 
@@ -20,6 +27,13 @@ public class MainController {
     @Autowired
     private OrderDAO orderDAO;
 
+    /**
+     * Displays the home page dashboard with system statistics.
+     * Shows counts for customers, products, and orders.
+     * 
+     * @param model Spring MVC model for passing data to the view
+     * @return View name "index" (maps to index.html template)
+     */
     @GetMapping("/")
     public String index(Model model) {
         // Get statistics for dashboard

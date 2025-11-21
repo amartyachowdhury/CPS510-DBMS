@@ -11,6 +11,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
+/**
+ * Controller for Product entity operations.
+ * Handles HTTP requests for product CRUD operations and search functionality.
+ * Provides endpoints for listing, viewing, creating, updating, and deleting products.
+ * 
+ * @author CPS510 Team
+ * @version 1.0
+ */
 @Controller
 @RequestMapping("/products")
 public class ProductController {

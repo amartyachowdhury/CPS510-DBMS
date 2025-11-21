@@ -14,12 +14,24 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
+/**
+ * Data Access Object (DAO) for Customer entity.
+ * Provides CRUD operations and search functionality for customers.
+ * Uses Spring JDBC for database operations.
+ * 
+ * @author CPS510 Team
+ * @version 1.0
+ */
 @Repository
 public class CustomerDAO {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    /**
+     * RowMapper implementation for mapping ResultSet rows to Customer objects.
+     * Maps database columns to Customer entity properties.
+     */
     private static final class CustomerRowMapper implements RowMapper<Customer> {
         @Override
         public Customer mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -32,17 +44,35 @@ public class CustomerDAO {
         }
     }
 
+    /**
+     * Retrieves all customers from the database, ordered by name.
+     * 
+     * @return List of all Customer entities, ordered by customer name
+     */
     public List<Customer> findAll() {
         String sql = "SELECT customer_id, customer_name, customer_email, customer_phone FROM Customer ORDER BY customer_name";
         return jdbcTemplate.query(sql, new CustomerRowMapper());
     }
 
+    /**
+     * Retrieves a customer by their unique ID.
+     * 
+     * @param customerId The unique identifier of the customer
+     * @return Customer entity if found, null otherwise
+     */
     public Customer findById(Long customerId) {
         String sql = "SELECT customer_id, customer_name, customer_email, customer_phone FROM Customer WHERE customer_id = ?";
         List<Customer> customers = jdbcTemplate.query(sql, new CustomerRowMapper(), customerId);
         return customers.isEmpty() ? null : customers.get(0);
     }
 
+    /**
+     * Inserts a new customer into the database.
+     * Uses Oracle sequence (CUSTOMER_SEQ) via trigger to auto-generate the ID.
+     * 
+     * @param customer The Customer entity to insert
+     * @return The generated customer ID
+     */
     public Long insert(Customer customer) {
         String sql = "INSERT INTO Customer (customer_name, customer_email, customer_phone) VALUES (?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -72,21 +102,35 @@ public class CustomerDAO {
         return keyHolder.getKey().longValue();
     }
 
+    /**
+     * Updates an existing customer in the database.
+     * 
+     * @param customer The Customer entity with updated information
+     * @return Number of rows affected (should be 1 if update successful)
+     */
     public int update(Customer customer) {
         String sql = "UPDATE Customer SET customer_name = ?, customer_email = ?, customer_phone = ? WHERE customer_id = ?";
         return jdbcTemplate.update(sql, customer.getCustomerName(), customer.getCustomerEmail(), 
                                    customer.getCustomerPhone(), customer.getCustomerId());
     }
 
+    /**
+     * Deletes a customer from the database by ID.
+     * 
+     * @param customerId The unique identifier of the customer to delete
+     * @return Number of rows affected (should be 1 if delete successful)
+     */
     public int delete(Long customerId) {
         String sql = "DELETE FROM Customer WHERE customer_id = ?";
         return jdbcTemplate.update(sql, customerId);
     }
 
     /**
-     * Searches for customers by name, email, or phone.
+     * Searches for customers by name, email, or phone number.
+     * Uses case-insensitive LIKE pattern matching.
+     * 
      * @param searchTerm The search term to match against customer name, email, or phone
-     * @return List of customers matching the search criteria
+     * @return List of customers matching the search criteria, ordered by customer name
      */
     public List<Customer> search(String searchTerm) {
         String sql = "SELECT customer_id, customer_name, customer_email, customer_phone FROM Customer " +

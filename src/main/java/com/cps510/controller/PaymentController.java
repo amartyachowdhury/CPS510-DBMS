@@ -12,6 +12,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * Controller for Payment entity operations.
+ * Handles HTTP requests for payment CRUD operations and search functionality.
+ * Provides endpoints for listing, viewing, creating, updating, and deleting payments.
+ * Automatically updates order status based on payment status (e.g., marks orders as "Completed" when fully paid).
+ * 
+ * @author CPS510 Team
+ * @version 1.0
+ */
 @Controller
 @RequestMapping("/payments")
 public class PaymentController {

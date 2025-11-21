@@ -10,6 +10,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
+/**
+ * Controller for Customer entity operations.
+ * Handles HTTP requests for customer CRUD operations and search functionality.
+ * Provides endpoints for listing, viewing, creating, updating, and deleting customers.
+ * 
+ * @author CPS510 Team
+ * @version 1.0
+ */
 @Controller
 @RequestMapping("/customers")
 public class CustomerController {

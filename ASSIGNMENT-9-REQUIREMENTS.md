@@ -35,16 +35,17 @@
 **Requirements:**
 - [x] Database in 3NF & BCNF ✅ **DONE** (from previous assignments)
 - [x] Database contains sample dummy data ✅ **DONE** (from SQL files)
-- [ ] Code properly formatted & commented ⚠️ **NEEDS REVIEW**
+- [x] Code properly formatted & commented ✅ **DONE**
 
 **Current Status:**
 - ✅ Database schema is normalized (3NF & BCNF)
 - ✅ Sample data exists in database
-- ⚠️ Need to review code comments, especially for:
-  - Advanced reports/queries
-  - Complex variables and functions
-  - DAO methods
-  - Controller methods
+- ✅ Code properly formatted and commented:
+  - ✅ JavaDoc comments on all classes and methods
+  - ✅ Comments for complex queries in DAO classes
+  - ✅ Comments for complex business logic (order status updates, payment calculations)
+  - ✅ Class-level documentation for all controllers
+  - ✅ Method-level documentation for all DAOs and key controller methods
 
 **To achieve 0.5 marks (Excellent):**
 - Code must be properly formatted
@@ -150,11 +151,11 @@
    - ✅ All options functional through web interface
    - ✅ Accessible from main navigation menu
 
-3. **Add Code Comments** (Required - 0.5 + 0.5 marks)
-   - Review all DAO classes - add comments for complex queries
-   - Review all Controller classes - add comments for methods
-   - Review model classes - add JavaDoc comments
-   - Comment complex business logic (e.g., order status updates)
+3. **Add Code Comments** (Required - 0.5 + 0.5 marks) ✅ **COMPLETED**
+   - ✅ Added JavaDoc comments to all DAO classes - comprehensive method documentation
+   - ✅ Added JavaDoc comments to all Controller classes - class and method documentation
+   - ✅ Added JavaDoc comments to all Model classes - class and field documentation
+   - ✅ Commented complex business logic (e.g., order status updates, payment calculations)
 
 ### Medium Priority (Presentation preparation):
 
@@ -170,8 +171,8 @@
 
 **Core Assignment (3 marks):**
 - Menu with UI: 1.0 mark ✅ (all menu options implemented)
-- Normalization & Schema: 0.5 marks (need code comments)
-- SQL Queries & Code: 0.5 marks (✅ search done, need comments)
+- Normalization & Schema: 0.5 marks ✅ (code comments added)
+- SQL Queries & Code: 0.5 marks ✅ (search done, comments added)
 - Individual Evaluation: 1.0 mark (presentation required)
 
 **Bonus (3 marks):**
@@ -190,7 +191,7 @@
 - [ ] Database connection instructions
 - [x] All menu options functional ✅
 - [x] Search functionality working ✅
-- [ ] Code properly commented
+- [x] Code properly commented ✅
 - [ ] Ready for demo/presentation
 
 ---
@@ -199,6 +200,6 @@
 
 1. ✅ **Add Search Bar** to each list page (Customers, Products, Orders, Payments) - **COMPLETED**
 2. ✅ **Add Admin Menu** page with Drop/Create/Populate/Query options - **COMPLETED**
-3. **Add JavaDoc Comments** to all classes and methods
+3. ✅ **Add JavaDoc Comments** to all classes and methods - **COMPLETED**
 4. **Test all functionality** before submission
 

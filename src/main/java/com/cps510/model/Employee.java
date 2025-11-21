@@ -1,5 +1,13 @@
 package com.cps510.model;
 
+/**
+ * Model class representing an Employee entity.
+ * Maps to the Employee table in the database.
+ * Contains employee information including name, email, phone, and role.
+ * 
+ * @author CPS510 Team
+ * @version 1.0
+ */
 public class Employee {
     private Long employeeId;
     private String employeeName;

@@ -2,6 +2,14 @@ package com.cps510.model;
 
 import java.math.BigDecimal;
 
+/**
+ * Model class representing a Product entity.
+ * Maps to the Product table in the database.
+ * Contains product information including name, size, color, brand, price, and stock quantity.
+ * 
+ * @author CPS510 Team
+ * @version 1.0
+ */
 public class Product {
     private Long productId;
     private String productName;

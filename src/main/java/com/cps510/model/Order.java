@@ -3,6 +3,15 @@ package com.cps510.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
+/**
+ * Model class representing an Order entity.
+ * Maps to the Order_ table in the database.
+ * Contains order information including date, total amount, status, and references to customer and employee.
+ * Also includes display fields (customerName, employeeName) for UI purposes.
+ * 
+ * @author CPS510 Team
+ * @version 1.0
+ */
 public class Order {
     private Long orderId;
     private Date orderDate;

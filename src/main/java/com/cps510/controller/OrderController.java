@@ -13,6 +13,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * Controller for Order entity operations.
+ * Handles HTTP requests for order CRUD operations, order item management, and search functionality.
+ * Provides endpoints for listing, viewing, creating, updating, and deleting orders.
+ * Also manages order items and automatically recalculates order totals.
+ * 
+ * @author CPS510 Team
+ * @version 1.0
+ */
 @Controller
 @RequestMapping("/orders")
 public class OrderController {

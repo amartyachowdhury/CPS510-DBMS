@@ -2,6 +2,16 @@ package com.cps510.model;
 
 import java.math.BigDecimal;
 
+/**
+ * Model class representing an OrderItem entity (bridge table).
+ * Maps to the OrderItem table in the database.
+ * Represents a line item in an order, linking orders to products with quantity and unit price.
+ * Also includes display fields from joined tables (productName, productBrand, categoryName) for UI purposes.
+ * Contains a calculated lineTotal field (itemQty * unitPrice).
+ * 
+ * @author CPS510 Team
+ * @version 1.0
+ */
 public class OrderItem {
     private Long orderId;
     private Long productId;

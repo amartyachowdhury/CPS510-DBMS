@@ -3,6 +3,15 @@ package com.cps510.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
+/**
+ * Model class representing a Payment entity.
+ * Maps to the Payment table in the database.
+ * Contains payment information including method, amount, status, and reference to order.
+ * Also includes display fields (orderDate, customerName) from joined tables for UI purposes.
+ * 
+ * @author CPS510 Team
+ * @version 1.0
+ */
 public class Payment {
     private Long paymentId;
     private Long orderId;
