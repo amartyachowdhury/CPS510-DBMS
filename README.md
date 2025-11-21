@@ -2,6 +2,12 @@
 
 A Spring Boot web application for managing a Clothing Retail Store database system connected to Oracle 11g.
 
+## 🚀 Live Demo
+
+**Deployed Application**: [View Live Demo](https://your-app.up.railway.app)
+
+> **Note**: If the deployed application cannot connect to the database (due to network restrictions), please follow the [Local Launch Instructions](#building-and-running) below to run the application locally.
+
 ## Features
 
 - **Customer Management**: Create, read, update, and delete customer records
@@ -53,6 +59,26 @@ export DB_PASSWORD=your_password
 
 ## Building and Running
 
+### Prerequisites
+- Java 11 or higher
+- Maven 3.6+
+- Oracle 11g database access (Ryerson Oracle server or local Oracle)
+
+### Configuration
+
+**Option 1: Environment Variables (Recommended)**
+```bash
+export DB_USERNAME=your_username
+export DB_PASSWORD=your_password
+```
+
+**Option 2: Edit application.properties**
+Edit `src/main/resources/application.properties` and update:
+```properties
+spring.datasource.username=your_username
+spring.datasource.password=your_password
+```
+
 ### Build the project:
 ```bash
 mvn clean package
@@ -69,6 +95,28 @@ java -jar target/cps510-dbms-1.0.0.jar
 ```
 
 The application will start on `http://localhost:8080`
+
+### First-Time Setup (Required)
+
+**IMPORTANT**: The database schema must be created before using the application.
+
+1. **Launch the application** (see above)
+
+2. **Navigate to Admin Menu**: `http://localhost:8080/admin`
+
+3. **Set up the database**:
+   - Click **"Create Tables"** - Creates the complete database schema (tables, sequences, triggers, views)
+   - Click **"Populate Tables"** - Inserts sample data into all tables
+   - Click **"Query Tables"** - Verifies data exists (shows row counts)
+
+4. **Start using the application**:
+   - Dashboard: `http://localhost:8080`
+   - Customers: `http://localhost:8080/customers`
+   - Products: `http://localhost:8080/products`
+   - Orders: `http://localhost:8080/orders`
+   - Payments: `http://localhost:8080/payments`
+
+**Note**: The application works independently and includes all necessary functionality to set up the database through the Admin menu. No manual SQL execution required!
 
 ## Project Structure
 
@@ -135,12 +183,25 @@ cps510-dbms/
 
 The application uses Spring JDBC with connection pooling. The JDBC template is configured in `DatabaseConfig.java` and uses the connection settings from `application.properties`.
 
+## Admin Menu - Schema Management
+
+The application includes an Admin menu (`/admin`) for managing the database schema:
+
+- **Drop Tables**: Removes all tables, views, and sequences (use with caution!)
+- **Create Tables**: Creates the complete database schema (tables, sequences, triggers, views)
+- **Populate Tables**: Inserts sample data into all tables
+- **Query Tables**: Shows summary of row counts for all tables and views
+
+**Typical Workflow**: Create Tables → Populate Tables → Query Tables (to verify)
+
 ## Notes
 
-- The database schema must already exist before running the application
+- **The database schema can be created through the Admin menu** - no manual SQL execution required
 - Oracle sequences are used for auto-generating IDs via triggers
 - The application uses existing views for complex queries (V_ORDERS_SUMMARY, V_ORDER_LINE_ITEMS, V_PAYMENTS)
 - Order totals are automatically recalculated when items are added/removed
+- Order status automatically updates when payments are added/updated/deleted
+- The application works independently - all setup can be done through the web interface
 
 ## License
 
