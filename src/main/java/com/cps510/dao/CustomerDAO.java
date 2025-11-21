@@ -82,5 +82,20 @@ public class CustomerDAO {
         String sql = "DELETE FROM Customer WHERE customer_id = ?";
         return jdbcTemplate.update(sql, customerId);
     }
+
+    /**
+     * Searches for customers by name, email, or phone.
+     * @param searchTerm The search term to match against customer name, email, or phone
+     * @return List of customers matching the search criteria
+     */
+    public List<Customer> search(String searchTerm) {
+        String sql = "SELECT customer_id, customer_name, customer_email, customer_phone FROM Customer " +
+                     "WHERE UPPER(customer_name) LIKE UPPER(?) " +
+                     "OR UPPER(customer_email) LIKE UPPER(?) " +
+                     "OR UPPER(customer_phone) LIKE UPPER(?) " +
+                     "ORDER BY customer_name";
+        String searchPattern = "%" + searchTerm + "%";
+        return jdbcTemplate.query(sql, new CustomerRowMapper(), searchPattern, searchPattern, searchPattern);
+    }
 }
 

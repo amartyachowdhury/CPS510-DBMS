@@ -23,8 +23,14 @@ public class PaymentController {
     private OrderDAO orderDAO;
 
     @GetMapping
-    public String listPayments(Model model) {
-        List<Payment> payments = paymentDAO.findAll();
+    public String listPayments(@RequestParam(required = false) String search, Model model) {
+        List<Payment> payments;
+        if (search != null && !search.trim().isEmpty()) {
+            payments = paymentDAO.search(search.trim());
+            model.addAttribute("searchTerm", search);
+        } else {
+            payments = paymentDAO.findAll();
+        }
         model.addAttribute("payments", payments);
         return "payments/list";
     }

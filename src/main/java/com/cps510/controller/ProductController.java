@@ -22,8 +22,14 @@ public class ProductController {
     private CategoryDAO categoryDAO;
 
     @GetMapping
-    public String listProducts(Model model) {
-        List<Product> products = productDAO.findAll();
+    public String listProducts(@RequestParam(required = false) String search, Model model) {
+        List<Product> products;
+        if (search != null && !search.trim().isEmpty()) {
+            products = productDAO.search(search.trim());
+            model.addAttribute("searchTerm", search);
+        } else {
+            products = productDAO.findAll();
+        }
         model.addAttribute("products", products);
         return "products/list";
     }

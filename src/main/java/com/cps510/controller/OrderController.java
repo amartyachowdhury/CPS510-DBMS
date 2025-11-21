@@ -33,8 +33,14 @@ public class OrderController {
     private OrderItemDAO orderItemDAO;
 
     @GetMapping
-    public String listOrders(Model model) {
-        List<Order> orders = orderDAO.findAll();
+    public String listOrders(@RequestParam(required = false) String search, Model model) {
+        List<Order> orders;
+        if (search != null && !search.trim().isEmpty()) {
+            orders = orderDAO.search(search.trim());
+            model.addAttribute("searchTerm", search);
+        } else {
+            orders = orderDAO.findAll();
+        }
         model.addAttribute("orders", orders);
         return "orders/list";
     }

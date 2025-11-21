@@ -18,8 +18,14 @@ public class CustomerController {
     private CustomerDAO customerDAO;
 
     @GetMapping
-    public String listCustomers(Model model) {
-        List<Customer> customers = customerDAO.findAll();
+    public String listCustomers(@RequestParam(required = false) String search, Model model) {
+        List<Customer> customers;
+        if (search != null && !search.trim().isEmpty()) {
+            customers = customerDAO.search(search.trim());
+            model.addAttribute("searchTerm", search);
+        } else {
+            customers = customerDAO.findAll();
+        }
         model.addAttribute("customers", customers);
         return "customers/list";
     }

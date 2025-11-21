@@ -92,5 +92,26 @@ public class PaymentDAO {
         BigDecimal total = jdbcTemplate.queryForObject(sql, BigDecimal.class, orderId);
         return total != null ? total : BigDecimal.ZERO;
     }
+
+    /**
+     * Searches for payments by payment ID, order ID, payment method, or status.
+     * @param searchTerm The search term to match against payment attributes
+     * @return List of payments matching the search criteria
+     */
+    public List<Payment> search(String searchTerm) {
+        String sql = "SELECT p.payment_id, p.order_id, p.payment_method, p.payment_amount, p.payment_status, " +
+                     "o.order_date, c.customer_name " +
+                     "FROM Payment p " +
+                     "JOIN Order_ o ON p.order_id = o.order_id " +
+                     "JOIN Customer c ON o.customer_id = c.customer_id " +
+                     "WHERE TO_CHAR(p.payment_id) LIKE ? " +
+                     "OR TO_CHAR(p.order_id) LIKE ? " +
+                     "OR UPPER(p.payment_method) LIKE UPPER(?) " +
+                     "OR UPPER(p.payment_status) LIKE UPPER(?) " +
+                     "OR TO_CHAR(p.payment_amount) LIKE ? " +
+                     "ORDER BY p.payment_id DESC";
+        String searchPattern = "%" + searchTerm + "%";
+        return jdbcTemplate.query(sql, new PaymentRowMapper(), searchPattern, searchPattern, searchPattern, searchPattern, searchPattern);
+    }
 }
 

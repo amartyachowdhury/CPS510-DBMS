@@ -6,7 +6,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -92,6 +91,24 @@ public class ProductDAO {
     public int delete(Long productId) {
         String sql = "DELETE FROM Product WHERE product_id = ?";
         return jdbcTemplate.update(sql, productId);
+    }
+
+    /**
+     * Searches for products by name, brand, colour, or category name.
+     * @param searchTerm The search term to match against product attributes
+     * @return List of products matching the search criteria
+     */
+    public List<Product> search(String searchTerm) {
+        String sql = "SELECT p.product_id, p.product_name, p.product_size, p.product_colour, p.product_brand, " +
+                     "p.product_price, p.product_stock_qty, p.category_id, c.category_name " +
+                     "FROM Product p JOIN Category_ c ON p.category_id = c.category_id " +
+                     "WHERE UPPER(p.product_name) LIKE UPPER(?) " +
+                     "OR UPPER(p.product_brand) LIKE UPPER(?) " +
+                     "OR UPPER(p.product_colour) LIKE UPPER(?) " +
+                     "OR UPPER(c.category_name) LIKE UPPER(?) " +
+                     "ORDER BY p.product_name";
+        String searchPattern = "%" + searchTerm + "%";
+        return jdbcTemplate.query(sql, new ProductRowMapper(), searchPattern, searchPattern, searchPattern, searchPattern);
     }
 }
 

@@ -148,5 +148,24 @@ public class OrderDAO {
             return BigDecimal.ZERO;
         }
     }
+
+    /**
+     * Searches for orders by order ID, customer name, employee name, or status.
+     * @param searchTerm The search term to match against order attributes
+     * @return List of orders matching the search criteria
+     */
+    public List<Order> search(String searchTerm) {
+        String sql = "SELECT o.order_id, o.order_date, o.total_amount, o.order_status, " +
+                     "o.customer_id, o.employee_id, c.customer_name, e.employee_name " +
+                     "FROM Order_ o JOIN Customer c ON o.customer_id = c.customer_id " +
+                     "JOIN Employee e ON o.employee_id = e.employee_id " +
+                     "WHERE TO_CHAR(o.order_id) LIKE ? " +
+                     "OR UPPER(c.customer_name) LIKE UPPER(?) " +
+                     "OR UPPER(e.employee_name) LIKE UPPER(?) " +
+                     "OR UPPER(o.order_status) LIKE UPPER(?) " +
+                     "ORDER BY o.order_date DESC";
+        String searchPattern = "%" + searchTerm + "%";
+        return jdbcTemplate.query(sql, new OrderRowMapperWithIds(), searchPattern, searchPattern, searchPattern, searchPattern);
+    }
 }
 
